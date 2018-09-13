@@ -11,6 +11,11 @@ print(addr)
 fire = requests.post(addr, data={'x':x, 'y':y})
 
 status = fire.status_code
-response = fire.headers['hit']
+headers = fire.headers
+hit = headers['hit']
 
-print('HTTP{}; Hit={}'.format(status,response))
+if 'sunk' in headers:
+    sunk = headers['sunk']
+    print('HTTP{}; Hit={}; Sunk={}'.format(status,hit,sunk))
+else:
+    print('HTTP{}; Hit={}'.format(status,hit))

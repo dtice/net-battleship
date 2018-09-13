@@ -31,8 +31,10 @@ class client_handler(BaseHTTPRequestHandler):
                     self.send_header('hit', '0')
             else:
                 self.send_response(404)
+                self.send_header('hit', '0')
         else:
             self.send_response(410)
+            self.send_header('hit', '0')
         self.end_headers()
 
     def do_POST(self):
@@ -46,7 +48,7 @@ class client_handler(BaseHTTPRequestHandler):
         self._set_headers(hit,sunk,dupe,ib)
 
 def check_board(x, y):
-    hit,sunk,dupe,ib = 0, 'X', 0, 1
+    hit,sunk,dupe,ib = 1, 'D', 0, 1
     return hit,sunk,dupe,ib
 
 def run(server_class=HTTPServer, handler_class=client_handler, port=port):
