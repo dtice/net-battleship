@@ -1,17 +1,16 @@
 import socket
 import sys
+import requests
 
-arg = sys.argv
-port = 8000
+port = int(sys.argv[2])
+addr = '{}{}:{}'.format("http://",sys.argv[1],port)
+x = sys.argv[3]
+y = sys.argv[4]
+print(addr)
 
-target = '127.0.0.1'
+fire = requests.post(addr, data={'x':x, 'y':y})
 
-client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+status = fire.status_code
+response = fire.headers['hit']
 
-client.connect((target, port))
-
-client.send('{};{}'.format(arg[1], arg[2]))
-
-response = client.recv(4096)
-
-print response
+print('HTTP{}; Hit={}'.format(status,response))

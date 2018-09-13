@@ -9,30 +9,50 @@
 #     print("Running " + str(httpd.server_name) + " on " + str(httpd.server_port) + "...")
 #     httpd.serve_forever()
 # run()
+from http.server import *
+from http.client import *
+import sys
+import requests
 
-import socket
-import threading
+port = int(sys.argv[1])
+board = sys.argv[2]
 
-bind_addr = '127.0.0.1'
-bind_port = 8000
+class client_handler(BaseHTTPRequestHandler):
+    def _set_headers(self, hit, sunk, dupe, ib):
+        if dupe == 0:
+            if ib == 1:
+                if hit == 1:
+                    self.send_response(200)
+                    self.send_header('hit', '1')
+                    if sunk != 'X':
+                        self.send_header('sunk',sunk)
+                else:
+                    self.send_response(200)
+                    self.send_header('hit', '0')
+            else:
+                self.send_response(404)
+        else:
+            self.send_response(410)
+        self.end_headers()
 
-server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-server.bind((bind_addr, bind_port))
-server.listen(1)
+    def do_POST(self):
+        s = int(self.headers.get_all('content-length')[0])
+        coords = self.rfile.read(s).decode('utf-8')
+        y,x = coords.split("&")
+        x = x.split("=")[1]
+        y = y.split("=")[1]
+        print("Received coordinates: X: {}, Y: {}".format(x,y))
+        hit,sunk,dupe,ib = check_board(x,y)
+        self._set_headers(hit,sunk,dupe,ib)
 
-print("Listening on ", bind_addr, " : ", bind_port)
+def check_board(x, y):
+    hit,sunk,dupe,ib = 0, 'X', 0, 1
+    return hit,sunk,dupe,ib
 
-def handle_client_connection(client_socket):
-    request = client_socket.recv(1024)
-    x, y = str(request).split(';')
-    client_socket.send('{}*{}={}'.format(x, y, int(x)*int(y))
-    client_socket.close()
+def run(server_class=HTTPServer, handler_class=client_handler, port=port):
+    server_address = ('127.0.0.1', port)
+    httpd = server_class(server_address, handler_class)
+    print('Starting server on port ', port)
+    httpd.serve_forever()
 
-while True:
-    client_sock, address = server.accept()
-    print("Accepted connection from ", address[0], ":", address[1])
-    client_handler = threading.Thread(
-        target=handle_client_connection,
-        args=(client_sock,)
-    )
-    client_handler.start()
+run()
