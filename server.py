@@ -55,12 +55,6 @@ class client_handler(BaseHTTPRequestHandler):
 # checks board and sets hit, sunk, dupe, and ib according to coordinates and boat placement
 def check_board(x, y):
     hit,sunk,dupe,ib = 0, 'X', 0, 0
-    x = int(x)
-    y = int(y)
-    if(0 <= x <= 10 and 0 <= y <= 10):
-        ib = 1
-        if(2 <= x <= 4 and y == 3):
-            hit = 1
     return hit,sunk,dupe,ib
 
 # runs the server
