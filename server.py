@@ -14,7 +14,7 @@ with open('own_board.txt', 'r') as f:
 	while (i != 10):
 		next = f.readline()
 		next = next.rstrip()
-		board[i] = next	
+		board[i] = next
 		i = i+1;
 
 # client_handler uses BaseHTTPRequestHandler to handle POST requests
@@ -79,7 +79,8 @@ def check_board(x, y):
         tempL[y] = "X"
         temp = ''.join(tempL)
         board[x] = temp
-        print(board)
+        for i in board:
+			print(i)
     return hit,sunk,dupe,ib
 
 # runs the server
