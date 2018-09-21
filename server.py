@@ -5,7 +5,17 @@ import requests
 
 # get port and name of board file from arguments
 port = int(sys.argv[1])
-board = sys.argv[2]
+w, h = 10, 10;
+board = [[0 for x in range(w)] for y in range(h)]
+
+#reads the txt file into an array that the server can read from
+i = 0;
+with open('own_board.txt', 'r') as f:
+	while (i != 10):
+		next = f.readline()
+		next = next.rstrip()
+		board[i] = next	
+		i = i+1;
 
 # client_handler uses BaseHTTPRequestHandler to handle POST requests
 class client_handler(BaseHTTPRequestHandler):
@@ -55,6 +65,21 @@ class client_handler(BaseHTTPRequestHandler):
 # checks board and sets hit, sunk, dupe, and ib according to coordinates and boat placement
 def check_board(x, y):
     hit,sunk,dupe,ib = 0, 'X', 0, 0
+    x = int(x)
+    y = int(y)
+    if(0 <= x <= 10 and 0 <= y <= 10):
+        target = board[x][y]
+        ib = 1
+        if(target == "X"):
+            dupe = 1
+        if(target != "_"):
+            hit = 1
+        temp = board[x]
+        tempL = list(temp)
+        tempL[y] = "X"
+        temp = ''.join(tempL)
+        board[x] = temp
+        print(board)
     return hit,sunk,dupe,ib
 
 # runs the server
