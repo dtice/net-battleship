@@ -1,0 +1,100 @@
+<html>
+  <head>
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
+  </head>
+
+  <body>
+    <div id="container" style=" background: lightblue;">
+      <span>Enemy Board</span>
+      <table id="enemyBoard">
+      </table>
+      <hr>
+      <span>Your Board</span>
+      <table id="playerBoard">
+      </table>
+      <br>
+      <form id="controls" action="" method="post">
+        <input id="xInput" type="text" placeholder="X"></input>
+        <input id="yInput" type="text" placeholder="Y"></input>
+        <button id="submit">Fire!</button>
+        <br>
+      </form>
+      <span id="resultMessage"></span>
+    </div>
+  </body>
+  <script>
+    var grid;
+    for(var i = 0; i <= 9; i++){
+      grid += "<tr>"
+      for(var j = 0; j <= 9; j++){
+        grid += "<td id='a-"+i+"-"+j+"' height='24px' width='24px'><img height='24px' width='24px' src='img/wave.jpg'/></td>"
+      }
+      grid += "</tr>"
+    }
+    $("#playerBoard").html(grid);
+    $("#enemyBoard").html(grid);
+    function updateEnemySquare(x, y, type){
+      switch(type){
+        case 'H':
+          $("#enemyBoard").find("#a-"+y+"-"+x).html("<img height='24px' width='24px' src='img/hit.png'/>");
+          break;
+        case 'M':
+          $("#enemyBoard").find("#a-"+y+"-"+x).html("M");
+          break;
+        default:
+          break;
+      }
+    }
+    $(function (){
+      $('#controls').submit(function(event){
+        event.preventDefault();
+        $.ajax({
+          type: 'POST',
+          url: 'http://127.0.0.1:8000',
+          data: {
+            x: $("#xInput").val(),
+            y: $("#yInput").val()
+          },
+          success: function(data, textStatus, request){
+            if(request.getResponseHeader('hit') == 1){
+              updateEnemySquare($("#xInput").val(),$("#yInput").val(), 'H');
+              if(request.getResponseHeader('sunk')){
+                var sunkShip;
+                switch(request.getResponseHeader('sunk')){
+                  case 'C':
+                    sunkShip = "carrier";
+                    break;
+                  case 'B':
+                    sunkShip = "battleship";
+                    break;
+                  case 'R':
+                    sunkShip = "cruiser";
+                    break;
+                  case 'S':
+                    sunkShip = "submarine";
+                    break;
+                  case 'D':
+                    sunkShip = "destroyer";
+                    break;
+                  default:
+                    break;
+                }
+                $("#resultMessage").append("You sunk the enemy's " + sunkShip + "!");
+              }
+            }
+            else{
+              updateEnemySquare($("#xInput").val(),$("#yInput").val(), 'M')
+            }
+          },
+          error: function(request, textStatus, errorThrown){
+            alert(errorThrown);
+          }
+        });
+      });
+    });
+  </script>
+</html>

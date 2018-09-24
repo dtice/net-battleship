@@ -18,7 +18,7 @@ with open('own_board.txt', 'r') as f:
 		i = i+1;
 
 # client_handler uses BaseHTTPRequestHandler to handle POST requests
-class client_handler(BaseHTTPRequestHandler):
+class client_handler(SimpleHTTPRequestHandler):
     def _set_headers(self, hit, sunk, dupe, ib):
         # if the player has never hit this spot
         if dupe == 0:
@@ -61,6 +61,10 @@ class client_handler(BaseHTTPRequestHandler):
 
         # sets headers on packet
         self._set_headers(hit,sunk,dupe,ib)
+
+	def do_GET(self):
+		self.send_response(200)
+		self.end_headers()
 
 # checks board and sets hit, sunk, dupe, and ib according to coordinates and boat placement
 def check_board(x, y):
