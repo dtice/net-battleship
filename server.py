@@ -5,17 +5,42 @@ import requests
 
 # get port and name of board file from arguments
 port = int(sys.argv[1])
+board = sys.argv[2]
 w, h = 10, 10;
 board = [[0 for x in range(w)] for y in range(h)]
-
+cCount = 0
+bCount = 0
+rCount = 0
+sCount = 0
+dCount = 0
 #reads the txt file into an array that the server can read from
 i = 0;
-with open('own_board.txt', 'r') as f:
+with open(sys.argv[2], 'r') as f:
 	while (i != 10):
 		next = f.readline()
 		next = next.rstrip()
 		board[i] = next
 		i = i+1;
+
+for row in board:
+    #line = list(board[i])
+    for y in row:
+        if(y == 'C'):
+            cCount += 1;
+        if(y == 'B'):
+            bCount += 1;
+        if(y == 'R'):
+            rCount += 1;
+        if(y == 'S'): 
+            sCount += 1;
+        if(y == 'D'): 
+            dCount += 1;
+
+        
+
+print(cCount)
+        
+        
 
 # client_handler uses BaseHTTPRequestHandler to handle POST requests
 class client_handler(SimpleHTTPRequestHandler):
@@ -49,7 +74,7 @@ class client_handler(SimpleHTTPRequestHandler):
         coords = self.rfile.read(s).decode('utf-8')
 
         # string manipulation
-        y,x = coords.split("&")
+        x,y = coords.split("&")
         x = x.split("=")[1]
         y = y.split("=")[1]
 
@@ -69,6 +94,11 @@ class client_handler(SimpleHTTPRequestHandler):
 # checks board and sets hit, sunk, dupe, and ib according to coordinates and boat placement
 def check_board(x, y):
     hit,sunk,dupe,ib = 0, 'X', 0, 0
+    global cCount
+    global bCount
+    global rCount
+    global sCount
+    global dCount
     x = int(x)
     y = int(y)
     if(0 <= x <= 10 and 0 <= y <= 10):
@@ -80,11 +110,36 @@ def check_board(x, y):
             hit = 1
         temp = board[x]
         tempL = list(temp)
+        if(target == 'C'):
+            cCount -= 1;
+        if(target == 'B'):
+            bCount -= 1;
+        if(target == 'R'):
+            rCount -= 1;
+        if(target == 'S'): 
+            sCount -= 1;
+        if(target == 'D'): 
+            dCount -= 1;
         tempL[y] = "X"
         temp = ''.join(tempL)
         board[x] = temp
         for i in board:
-			print(i)
+	        print(i)
+        if(cCount == 0):
+            sunk = 'C';
+            cCount = -1;
+        if(bCount == 0):
+            sunk = 'B';
+            bCount = -1;
+        if(rCount == 'R'):
+            sunk = 'R';
+            rCount = -1;
+        if(sCount == 'S'): 
+            sunk = 'S';
+            sCount = -1;
+        if(dCount == 'D'): 
+            sunk = 'D';
+            dCount -1;
     return hit,sunk,dupe,ib
 
 # runs the server
