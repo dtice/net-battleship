@@ -8,7 +8,7 @@
   </head>
 
   <body>
-    <div id="container" style=" background: lightblue;">
+    <div id="container" style="padding-right:20px;padding-left:20px;background-color: lightblue;display:inline-block;">
       <span>Enemy Board</span>
       <table id="enemyBoard">
       </table>
@@ -18,8 +18,9 @@
       </table>
       <br>
       <form id="controls" action="" method="post">
-        <input id="xInput" type="text" placeholder="X"></input>
-        <input id="yInput" type="text" placeholder="Y"></input>
+        <input id="yInput" type="text" placeholder="X"></input>
+        <br>
+        <input id="xInput" type="text" placeholder="Y"></input>
         <button id="submit">Fire!</button>
         <br>
       </form>
@@ -40,10 +41,10 @@
     function updateEnemySquare(x, y, type){
       switch(type){
         case 'H':
-          $("#enemyBoard").find("#a-"+y+"-"+x).html("<img height='24px' width='24px' src='img/hit.png'/>");
+          $("#enemyBoard").find("#a-"+x+"-"+y).html("<img height='24px' width='24px' src='img/hit.png'/>");
           break;
         case 'M':
-          $("#enemyBoard").find("#a-"+y+"-"+x).html("M");
+          $("#enemyBoard").find("#a-"+x+"-"+y).html("M");
           break;
         default:
           break;
@@ -83,7 +84,8 @@
                   default:
                     break;
                 }
-                $("#resultMessage").append("You sunk the enemy's " + sunkShip + "!");
+                alert("You sunk the enemy's " + sunkShip + "!");
+                $("#resultMessage").append("You sunk the enemy's " + sunkShip + "!<br>");
               }
             }
             else{

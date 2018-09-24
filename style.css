@@ -1,6 +1,3 @@
-div{
-  display: inline-block;
-}
 #playerBoard td, #enemyBoard td {
     padding:0; margin:0;
 }

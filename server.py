@@ -31,16 +31,16 @@ for row in board:
             bCount += 1;
         if(y == 'R'):
             rCount += 1;
-        if(y == 'S'): 
+        if(y == 'S'):
             sCount += 1;
-        if(y == 'D'): 
+        if(y == 'D'):
             dCount += 1;
 
-        
+
 
 print(cCount)
-        
-        
+
+
 
 # client_handler uses BaseHTTPRequestHandler to handle POST requests
 class client_handler(SimpleHTTPRequestHandler):
@@ -116,9 +116,9 @@ def check_board(x, y):
             bCount -= 1;
         if(target == 'R'):
             rCount -= 1;
-        if(target == 'S'): 
+        if(target == 'S'):
             sCount -= 1;
-        if(target == 'D'): 
+        if(target == 'D'):
             dCount -= 1;
         tempL[y] = "X"
         temp = ''.join(tempL)
@@ -131,13 +131,13 @@ def check_board(x, y):
         if(bCount == 0):
             sunk = 'B';
             bCount = -1;
-        if(rCount == 'R'):
+        if(rCount == 0):
             sunk = 'R';
             rCount = -1;
-        if(sCount == 'S'): 
+        if(sCount == 0):
             sunk = 'S';
             sCount = -1;
-        if(dCount == 'D'): 
+        if(dCount == 0): 
             sunk = 'D';
             dCount -1;
     return hit,sunk,dupe,ib
