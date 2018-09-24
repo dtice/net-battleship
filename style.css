@@ -1,7 +1,13 @@
-#playerBoard td, #enemyBoard td {
+body{
+  color: green;
+}
+#playerBoard td, #enemyBoard td, #playerBoard th, #enemyBoard th {
     padding:0; margin:0;
 }
 
 #playerBoard, #enemyBoard {
   border-collapse: collapse;
+  border-style: solid;
+  border-width: 3px;
+  border-color: green;
 }

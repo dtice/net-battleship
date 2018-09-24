@@ -8,13 +8,15 @@
   </head>
 
   <body>
-    <div id="container" style="padding-right:20px;padding-left:20px;background-color: lightblue;display:inline-block;">
-      <span>Enemy Board</span>
-      <table id="enemyBoard">
+    <div id="container" style="padding-right:20px;padding-left:20px;background-color: black;display:inline-block;">
+      <span><u>Enemy Board</u></span>
+      <br>
+      <table border="1" id="enemyBoard">
       </table>
       <hr>
-      <span>Your Board</span>
-      <table id="playerBoard">
+      <span><u>Your Board</u></span>
+      <br>
+      <table border="1" id="playerBoard">
       </table>
       <br>
       <form id="controls" action="" method="post">
@@ -29,8 +31,13 @@
   </body>
   <script>
     var grid;
+    grid += "<tr><th></th>";
+    for(var k = 0; k <= 9; k++){
+      grid += "<th>"+k+"</th>";
+    }
+    grid += "</tr>"
     for(var i = 0; i <= 9; i++){
-      grid += "<tr>"
+      grid += "<tr><th height='24px' width='24px'>"+i+"</th>";
       for(var j = 0; j <= 9; j++){
         grid += "<td id='a-"+i+"-"+j+"' height='24px' width='24px'><img height='24px' width='24px' src='img/wave.jpg'/></td>"
       }
