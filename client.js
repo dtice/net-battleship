@@ -30,7 +30,7 @@ function populateBoats(file){
 
 draw_board("#playerBoard");
 draw_board("#enemyBoard");
-populateBoats("http://127.0.0.1:8001/own_board.txt");
+populateBoats("http://127.0.0.1:8000/own_board.txt");
 function updateEnemySquare(x, y, type){
   switch(type){
     case 'H':

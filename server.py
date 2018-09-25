@@ -14,13 +14,8 @@ rCount = 0
 sCount = 0
 dCount = 0
 #reads the txt file into an array that the server can read from
-i = 0;
-with open(sys.argv[2], 'r') as f:
-	while (i != 10):
-		next = f.readline()
-		next = next.rstrip()
-		board[i] = next
-		i = i+1;
+file = open("own_board.txt", "r")
+board = file.readlines()
 
 for row in board:
     #line = list(board[i])
@@ -35,11 +30,6 @@ for row in board:
             sCount += 1;
         if(y == 'D'):
             dCount += 1;
-
-
-
-print(cCount)
-
 
 
 # client_handler uses BaseHTTPRequestHandler to handle POST requests
@@ -137,9 +127,16 @@ def check_board(x, y):
         if(sCount == 0):
             sunk = 'S';
             sCount = -1;
-        if(dCount == 0): 
+        if(dCount == 0):
             sunk = 'D';
             dCount -1;
+	q = open("opponent_board.txt", "r")
+	oppboard = q.readlines()
+	for i in oppboard:
+		print(i)
+	f = open("own_board.txt", "w")
+	f.writelines(board)
+	f.close()
     return hit,sunk,dupe,ib
 
 # runs the server
